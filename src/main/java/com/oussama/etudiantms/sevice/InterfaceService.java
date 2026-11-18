@@ -8,11 +8,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 public interface InterfaceService {
-    public EtudiantResponseDto getEtudiantById(String id);
-    public  EtudiantResponseDto getEtudiantByName(String nom);
-    public List<EtudiantResponseDto> getEtudiants();
-    public void createEtudiant(EtudiantRequestDto e);
-    public void updateEtudiant(String id,EtudiantRequestDto e);
-    public void deleteEtudiant(String id);
-
+     EtudiantResponseDto getEtudiantById(String id);
+     EtudiantResponseDto getEtudiantByName(String nom);
+     List<EtudiantResponseDto> getEtudiants();
+    EtudiantResponseDto createEtudiant(EtudiantRequestDto e);
+    EtudiantResponseDto updateEtudiant(String id,EtudiantRequestDto e);
+    void deleteEtudiant(String id);
+    EtudiantResponseDto inscrireModule(String etudiantId, Long moduleId);
+    EtudiantResponseDto retirerModule(String etudiantId, Long moduleId);
 }
+
+

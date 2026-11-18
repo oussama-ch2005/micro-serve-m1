@@ -13,10 +13,17 @@ public class Mapper implements InterfaceMapper {
 
 
     @Override
-    public EtudiantResponseDto EtudiantToEtudiantResonseDto(Etudiant etudiant) {
-        EtudiantResponseDto x=new EtudiantResponseDto();
-        BeanUtils.copyProperties(etudiant,x);
-        return x;
+    public EtudiantResponseDto EtudiantToEtudiantResonseDto(Etudiant e) {
+        return EtudiantResponseDto.builder()
+                .id(e.getId())
+                .nom(e.getNom())
+                .prenom(e.getPrenom())
+                .age(e.getAge())
+                .email(e.getEmail())
+                .filiere(e.getFiliere() != null ? e.getFiliere().getNomFiliere() : null)
+                .numeroCarte(e.getCarte() != null ? e.getCarte().getNumeroCarte() : null)
+                .modules(e.getModules().stream().map(m -> m.getNomModule()).toList())
+                .build();
 
     }
 
@@ -26,7 +33,7 @@ public class Mapper implements InterfaceMapper {
     public Etudiant etudiantRequestDtoToEtudiant(EtudiantRequestDto e) {
         Etudiant x =new Etudiant();
         BeanUtils.copyProperties(e, x);
-        x.setId(UUID.randomUUID().toString());
+
         return x;
     }
 }

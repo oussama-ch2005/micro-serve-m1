@@ -12,4 +12,6 @@ public class EtudiantRequestDto {
     public String nom;
     public String prenom;
     public Integer age;
+    private Long filiereId;
+
 }

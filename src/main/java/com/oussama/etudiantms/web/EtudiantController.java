@@ -5,6 +5,7 @@ import com.oussama.etudiantms.DTOs.EtudiantResponseDto;
 import com.oussama.etudiantms.Repositories.EtudiantRepository;
 import com.oussama.etudiantms.entities.Etudiant;
 import com.oussama.etudiantms.sevice.InterfaceService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class EtudiantController {
     }
 
 
-  //  @GetMapping("etudiant/{nom]")
+  //  @GetMapping("etudiant/nom/{nom]")
     //public EtudiantResponseDto etudiantNom(@PathVariable  String nom){
       //  return interfaceService.getEtudiantByName(nom);
     //}
@@ -49,8 +50,9 @@ public class EtudiantController {
     // http://localhost:6060/etudiants
     // On passe etudiant dans le body de  POST
     @PostMapping("/etudiants")
-    public void newEtudiant(@RequestBody EtudiantRequestDto etudiant){
-        interfaceService.createEtudiant(etudiant);
+    @ResponseStatus(HttpStatus.CREATED)
+    public EtudiantResponseDto newEtudiant(@RequestBody EtudiantRequestDto etudiant){
+       return interfaceService.createEtudiant(etudiant);
 
     }
 
@@ -58,11 +60,9 @@ public class EtudiantController {
     // enlève l'étudiant 2 de la base avec DELETTE de HTTP.
     @DeleteMapping ("/etudiants/{id}")
     public void deleteEtudiant(@PathVariable String id){
-        try {
+
             interfaceService.deleteEtudiant(id);
-        }catch (RuntimeException e){
-            e.printStackTrace();
-        }
+
 
         // Ici on suppose que l'étudiant id existe on verra comment
         // faire sinon
@@ -72,12 +72,18 @@ public class EtudiantController {
     // par l'étudiant  etudiant donné dans le body PUT
 
     @PutMapping("/etudiants/{id}")
-    public void modifieEtudiant (@PathVariable String id, @RequestBody EtudiantRequestDto etudiant){
-       try{
-           interfaceService.updateEtudiant(id,etudiant);
-       }catch (RuntimeException e){
-           throw  new RuntimeException(String.format("etudiant %s not found",id));
-       }
+    public EtudiantResponseDto modifieEtudiant(@PathVariable String id,
+                                               @RequestBody EtudiantRequestDto dto) {
+        return interfaceService.updateEtudiant(id, dto);
+    }
+    @PostMapping("/etudiants/{id}/modules/{moduleId}")
+    public EtudiantResponseDto inscrire(@PathVariable String id, @PathVariable Long moduleId) {
+        return interfaceService.inscrireModule(id, moduleId);
+    }
+
+    @DeleteMapping("/etudiants/{id}/modules/{moduleId}")
+    public EtudiantResponseDto retirer(@PathVariable String id, @PathVariable Long moduleId) {
+        return interfaceService.retirerModule(id, moduleId);
     }
 
 }
